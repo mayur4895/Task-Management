@@ -1,22 +1,19 @@
+
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
  
 
-import { cn } from '@/lib/utils';
-
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from '@tanstack/react-query'
+import { cn } from '@/lib/utils'; 
 
  
  
  
 import ModalProvider from '@/components/providers/modal-provider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { useState } from 'react';
+import QueryProvider from '@/components/providers/query-provider';
 const font = Poppins({
   weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
@@ -32,10 +29,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  const queryClient = new QueryClient()
-  return (
-    <ClerkProvider appearance={{ elements: { footer: 'hidden' } }}>
+ 
+  return (  
+  
+<QueryProvider>
+        <ClerkProvider appearance={{ elements: { footer: 'hidden' } }}>
       <html lang="en" suppressHydrationWarning>
         <body className={cn(font.className)}>
           <ThemeProvider
@@ -44,14 +42,16 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="todo"
           >   
- 
+  
               {children}
-             
+            
             <ModalProvider />
           </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
-         
+     </QueryProvider>
+    
+ 
   );
 }

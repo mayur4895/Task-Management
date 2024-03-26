@@ -23,56 +23,27 @@ import { useRouter } from "next/navigation";
 import { Task } from "@prisma/client";
 import { Label } from "./ui/label";
 import { useModal } from "@/hooks/use-modal-store";
+import { useMutation, useQuery } from "@tanstack/react-query";  
+import { DeleteTask, GetAllTasks } from "./helper/getAllTasks";
 const Tasks = () => {
-  const router = useRouter();
-  const [Tasks, setTasks] = useState<Task[]>([]);
-  const [IsLoding, setIsLoding] = useState(false);
+  const router = useRouter();  
 
-  const getAllTasks = async () => {
-    try {
-      setIsLoding(true);
-      const res = await axios.get("/api/task");
-      setTasks(res.data);
-    } catch (error) {
-      console.log(error);
-      setIsLoding(false);
-    } finally {
-      setIsLoding(false);
-    }
-  };
+  const { isLoading:IsLoding ,data:Tasks} = useQuery({
+    queryKey: ["tasks"],
+    queryFn:  GetAllTasks
+  })
+  const mutation = useMutation({
+    mutationFn:  DeleteTask,
+    onSuccess: () => {
+       
+       
+    },
+  })
+  
+ 
+ 
 
-  useEffect(() => {
-    getAllTasks();
-  }, []);
-
-  const deleteTask = async (taskId: any) => {
-    try {
-      setIsLoding(true);
-      await axios.delete(`/api/task/${taskId}`);
-      getAllTasks();
-    } catch (error) {
-      console.log(error);
-      setIsLoding(false);
-    } finally {
-      setIsLoding(false);
-    }
-  };
-
-  const togglestatus = async (taskId: any, taskstatus: boolean) => {
-    try {
-      setIsLoding(true);
-      const data = {
-        completed: taskstatus,
-      };
-      await axios.patch(`/api/task/status/${taskId}`, data);
-      getAllTasks();
-    } catch (error) {
-      console.log(error);
-      setIsLoding(false);
-    } finally {
-      setIsLoding(false);
-    }
-  };
+  
   const { onOpen } = useModal();
 
   if (IsLoding) {
@@ -85,7 +56,7 @@ const Tasks = () => {
 
   return (
     <div className="rounded-md  mb-5      h-full justify-start flex-shrink-0 flex flex-wrap gap-5 ">
-      {Tasks.map((task) => {
+      {Tasks.map((task:any) => {
         if (task) {
           return (
             <Card className="w-[310px]  overflow-clip p-5 z-50 dark:bg-zinc-900" key={task.id}>
@@ -116,7 +87,7 @@ const Tasks = () => {
                     variant="outline"
                     disabled={task.status === "completed"}
                     onClick={() => {
-                      deleteTask(task.id);
+                       mutation.mutate(task.id)
                     }}>
                     <PiTrashSimpleThin size={20} />
                   </Button>

@@ -50,7 +50,7 @@ const formSchema = z.object({
     }),
     desc: z
     .string()
-    .min(10, {
+    .min(1, {
       message: "Description must be at least 10 characters.",
     })
     .max(160, {

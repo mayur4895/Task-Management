@@ -38,6 +38,9 @@ import { useModal } from '@/hooks/use-modal-store'
 import { Calendar } from '../ui/calendar'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Textarea } from '../ui/textarea'
+import { useRouter } from 'next/navigation'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { getAllTasks } from '@/lib/getallTasks'
 
 
 const formSchema = z.object({
@@ -66,7 +69,7 @@ const formSchema = z.object({
 
 const EditTaskModal = () => {
   const { isOpen, type, onClose, data } = useModal()
- 
+ const router = useRouter();
   const isModalOpen = isOpen && type == 'editTask'
  
  
@@ -98,9 +101,8 @@ const EditTaskModal = () => {
        
       await axios.patch( `/api/task/${data.id}`, values)
       form.reset();
-      onClose();
-      
-      
+      router.refresh();
+      onClose();  
     } catch (error) {
       console.log(error)
     }
@@ -120,6 +122,18 @@ const EditTaskModal = () => {
       form.setValue("desc", data.desc);
      }
   },[data,form])
+
+
+
+
+  
+
+
+
+
+
+
+
 
   return (
     <>
