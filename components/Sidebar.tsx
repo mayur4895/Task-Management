@@ -27,8 +27,8 @@ const Sidebar = () => {
         <UserButton/> 
         </div>
         <ModeToggle/>
-    </div>
-
+    </div> 
+    
     <div className='mt-20  flex flex-col gap-5  p-0 w-full'>
 
        <Link href={"/dashboard/tasks"} className=' p-2  w-full '>Tasks</Link>  
