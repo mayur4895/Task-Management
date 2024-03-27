@@ -23,84 +23,58 @@ import { useRouter } from "next/navigation";
 import { Task } from "@prisma/client";
 import { Label } from "./ui/label";
 import { useModal } from "@/hooks/use-modal-store";
-import { useMutation, useQuery } from "@tanstack/react-query";  
-import { DeleteTask, GetAllTasks } from "./helper/getAllTasks";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";  
+import { DeleteTask, GetAllTasks } from "./helper/helper";
+import { TbLoader } from "react-icons/tb";
+import Image from "next/image";
+import TaskCard from "./task";
 const Tasks = () => {
   const router = useRouter();  
+  const queryClient = useQueryClient();
+   
 
-  const { isLoading:IsLoding ,data:Tasks} = useQuery({
-    queryKey: ["tasks"],
-    queryFn:  GetAllTasks
-  })
-  const mutation = useMutation({
-    mutationFn:  DeleteTask,
-    onSuccess: () => {
-       
-       
-    },
-  })
-  
+  const {data:Tasks,isLoading:IsLoading} = useQuery({ queryKey: ['tasks'], queryFn: GetAllTasks })
+
+ 
  
  
 
   
   const { onOpen } = useModal();
 
-  if (IsLoding) {
-    return <div>Loading...</div>;
-  }
+ 
 
-  if (!Tasks) {
-    return <div>No Taks Found</div>;
-  }
+   
+        if(IsLoading ) {
+return (<div className="h-[80vh] w-full flex items-center   justify-center">
+   <TbLoader size={30} className="  animate-spin"/>
+          </div>
+       ) }
+      
 
   return (
-    <div className="rounded-md  mb-5      h-full justify-start flex-shrink-0 flex flex-wrap gap-5 ">
+    <div className="rounded-md  mb-5  w-full    h-full justify-start flex-shrink-0 flex flex-wrap gap-5 ">
+        
+  {
+        !(Tasks.length > 0) && (
+          <div className="h-[80vh] w-full flex items-center   justify-center">
+               <div className="flex flex-col gap-3   items-center">
+                <Image  src={"/empty-box.png"} alt="empty" height={280} width={280} className=" opacity-25 object-cover"/>
+               <div className="flex flex-col gap-3">
+               <span className=" text-rose-500">There is no Task Found</span>
+                <Button variant={"outline"} onClick={()=>{onOpen('createTask')}}>Create New Task</Button>
+                </div>
+                </div>
+          </div>
+        )
+      }
+
       {Tasks.map((task:any) => {
         if (task) {
-          return (
-            <Card className="w-[310px]  overflow-clip p-5 z-50 dark:bg-zinc-900" key={task.id}>
-              <CardHeader className="p-0 mb-2">
-                 
-                <CardTitle className="flex  justify-between items-center">
-                  {task.title}{" "}
-                  <Label className="text-xs   text-gray-500">
-                    {task.priority}
-                  </Label>
-                </CardTitle>
-                <CardDescription className=" text-sm max-w-[250px]">{task.desc}</CardDescription>
-              </CardHeader>
-
-              <h2>Assignto : {task.assignto}</h2>
-              <CardContent />
-              <CardFooter  className="flex gap-3 p-0"> 
-
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      onOpen("editTask", task);
-                    }}>
-                    <CiEdit size={20} />
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    disabled={task.status === "completed"}
-                    onClick={() => {
-                       mutation.mutate(task.id)
-                    }}>
-                    <PiTrashSimpleThin size={20} />
-                  </Button>
-                
-
-                <div>
-                  <Button variant={"outline"} className=" text-sm">
-                    {task.status}
-                  </Button>
-
-                </div>
-              </CardFooter>
-            </Card>
+          return ( 
+            <TaskCard
+            taskdata={task}
+            />
           );
         }
       })}
@@ -109,3 +83,8 @@ const Tasks = () => {
 };
 
 export default Tasks;
+
+
+
+
+

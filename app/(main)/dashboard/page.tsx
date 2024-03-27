@@ -6,7 +6,7 @@ import React from 'react'
 const Dashboard = () => {
   return (
     <div className=' w-[clac(100%-285px)] flex-1  h-full    rounded-md      '> 
-        <Header/>
+       
         <Tasks/> 
     </div>
   )

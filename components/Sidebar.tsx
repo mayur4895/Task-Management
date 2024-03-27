@@ -24,8 +24,7 @@ const Sidebar = () => {
     <div className='w-full flex gap-2 items-center justify-between'>
       
         <div  className='flex items-center gap-1'>
-        <UserButton/>
-        <span>Mayur Shinde</span>
+        <UserButton/> 
         </div>
         <ModeToggle/>
     </div>

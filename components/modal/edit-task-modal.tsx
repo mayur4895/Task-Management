@@ -41,8 +41,10 @@ import { Textarea } from '../ui/textarea'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getAllTasks } from '@/lib/getallTasks'
+import { EditTask, GetAllTasks } from '../helper/helper'
 
 
+ 
 const formSchema = z.object({
   title: z.string().min(1,{
     message:"required"
@@ -51,7 +53,7 @@ const formSchema = z.object({
   }),
   desc: z
   .string()
-  .min(10, {
+  .min(1, {
     message: "Description must be at least 10 characters.",
   })
   .max(160, {
@@ -71,8 +73,9 @@ const EditTaskModal = () => {
   const { isOpen, type, onClose, data } = useModal()
  const router = useRouter();
   const isModalOpen = isOpen && type == 'editTask'
+  const queryClient = useQueryClient();
  
- 
+  const {data:Tasks,isLoading:IsLoading} = useQuery({ queryKey: ['tasks'], queryFn: GetAllTasks })
   
  
  
@@ -80,7 +83,6 @@ const EditTaskModal = () => {
  
 
   const form = useForm<z.infer<typeof formSchema>>({
-
     resolver: zodResolver(formSchema),
     defaultValues: {
       desc:"",
@@ -94,19 +96,27 @@ const EditTaskModal = () => {
   })
 
   const isloding = form.formState.isSubmitting
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-       
-       console.log(values);
-       
-      await axios.patch( `/api/task/${data.id}`, values)
-      form.reset();
-      router.refresh();
-      onClose();  
-    } catch (error) {
-      console.log(error)
-    }
+ 
+ 
+  async function onSubmit(values: z.infer<typeof formSchema>) { 
+    console.log(values); 
+  try {
+    console.log(values); 
+ const res = await EditTask(data.id, values);
+ 
+  form.reset();
+  onClose()
+  queryClient.invalidateQueries({ queryKey: ['tasks'] }) 
+ 
+  } catch (error) {
+ console.log(error);
+    
   }
+  }
+  
+ 
+  
+   
 
   const handleChnage = () => {
     form.reset()
@@ -127,10 +137,7 @@ const EditTaskModal = () => {
 
 
   
-
-
-
-
+ 
 
 
 
