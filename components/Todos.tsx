@@ -65,7 +65,7 @@ const Tasks = () => {
   const router = useRouter();  
   const queryClient = useQueryClient();
    
-const {setStatusFilter,statusFilter,setTasks,tasks} = useFilterStore();
+const {setStatusFilter,statusFilter} = useFilterStore();
 
   const {data:Tasks,isLoading:IsLoading} = useQuery({ queryKey: ['tasks'], queryFn: GetAllTasks })
  
