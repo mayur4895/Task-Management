@@ -5,23 +5,27 @@ import { Task } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import {create} from 'zustand';
 
- 
+export type fileType = 'all' | 'pending' | 'completed'
 
 interface TaskStore {
-  tasks: Task[];
-  statusFilter: 'all' | 'pending' | 'completed';
-  setStatusFilter: (status: 'all' | 'pending' | 'completed') => void;
+   
+  statusFilter:fileType; 
+  setStatusFilter: (status:fileType) => void;
 }
  
 const useFilterStore = create<TaskStore>((set) => ({ 
   
-   
-  tasks: [], 
-  statusFilter: 'all',
-
+    
+  statusFilter: 'all', 
   setStatusFilter: (status) => {
     set({ statusFilter: status });
   },
+
+
+
 }));
+
+
+
 
 export default useFilterStore;

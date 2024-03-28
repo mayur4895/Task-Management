@@ -25,6 +25,7 @@ import { Label } from "./ui/label";
 import { useModal } from "@/hooks/use-modal-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";  
 import { DeleteTask, GetAllTasks } from "./helper/helper";
+import useFilterStore from "@/hooks/use-filter-store";
  
 interface TaskCardProps{
     taskdata:any
@@ -33,7 +34,6 @@ const TaskCard = ({taskdata:task}:TaskCardProps) => {
   const router = useRouter();  
   const queryClient = useQueryClient();
    
-
   const {data:Tasks,isLoading:IsLoading} = useQuery({ queryKey: ['tasks'], queryFn: GetAllTasks })
 
 

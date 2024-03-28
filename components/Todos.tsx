@@ -2,20 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { CiEdit } from "react-icons/ci";
-import {
-  PiTrashSimpleThin,
-  PiCheckThin,
-  PiCrossThin,
-  PiXThin,
-} from "react-icons/pi";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 import { Toggle } from "@/components/ui/toggle";
 import axios from "axios";
 import { PiCircleNotchLight } from "react-icons/pi";
@@ -28,11 +21,51 @@ import { DeleteTask, GetAllTasks } from "./helper/helper";
 import { TbLoader } from "react-icons/tb";
 import Image from "next/image";
 import TaskCard from "./task";
-import useFilterStore from "@/hooks/use-filter-store";
+import useFilterStore, { fileType } from "@/hooks/use-filter-store";
+import { Separator } from "./ui/separator";
+
+
+
+const SelectItems = [
+  {
+     name:"All",
+     value:"all"
+  },
+  {
+    name:"Pending",
+    value:"pending"
+ },
+ {
+  name:"InProgress",
+  value:"inprogress"
+},
+ {
+  name:"Completed",
+  value:"completed"
+},
+{
+  name:"Delployed",
+  value:"deployed"
+},
+{
+  name:"Deffered",
+  value:"deffered"
+} 
+]
+
+
+
+
+
+
+
+
 const Tasks = () => {
+  
   const router = useRouter();  
   const queryClient = useQueryClient();
    
+const {setStatusFilter,statusFilter,setTasks,tasks} = useFilterStore();
 
   const {data:Tasks,isLoading:IsLoading} = useQuery({ queryKey: ['tasks'], queryFn: GetAllTasks })
  
@@ -56,12 +89,38 @@ return (<div className="h-[80vh] w-full flex items-center   justify-center">
       </div>
     )
 }
+ 
+ 
+   
+   const filtered = Tasks.filter((task: any) => {
+    return  statusFilter === 'all' || task.status === statusFilter;
+    
+  }); 
+
+  
 
   return (
+    <>  
+    <Select  onValueChange={(value:fileType)=>{setStatusFilter(value)}}>
+  <SelectTrigger className="w-[180px]">
+    <SelectValue placeholder="All" />
+  </SelectTrigger>
+  <SelectContent> 
+    {
+      SelectItems.map((item:any)=>{
+        return <SelectItem key={item.value} value={item.value}>{item.name}</SelectItem>
+      })
+    }
+  </SelectContent>
+</Select>
+<br />
+<Separator/>
+<br />
+     
     <div className="rounded-md  mb-5  w-full    h-full justify-start flex-shrink-0 flex flex-wrap gap-5 ">
         
   {
-        !Tasks && (
+        !filtered && (
           
           <div className="h-[80vh] w-full flex items-center   justify-center">
                <div className="flex flex-col gap-3   items-center">
@@ -75,7 +134,7 @@ return (<div className="h-[80vh] w-full flex items-center   justify-center">
         )
       }
     
-      {Tasks.map((task:any) => {
+      {filtered.map((task:any) => {
         if (task) {
           return ( 
             <TaskCard
@@ -85,7 +144,9 @@ return (<div className="h-[80vh] w-full flex items-center   justify-center">
           );
         }
       })}
+
     </div>
+    </>
   );
 };
 
