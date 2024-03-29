@@ -1,5 +1,4 @@
- 
-import {  Task } from '@prisma/client'; 
+  
 import {   addMonths, startOfMonth } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 import {create} from 'zustand';
@@ -10,7 +9,7 @@ import {create} from 'zustand';
 export type statusType = 'all' | 'pending' | 'completed' 
 export type prioritiesType =  'p0' | 'p1' | 'p2' | 'all';
 interface TaskStore {
-  FilterTasks:Task[];
+  FilterTasks:any[];
   priorityFilter:prioritiesType;
   nameFilter:string
   statusFilter:statusType; 
@@ -19,7 +18,7 @@ interface TaskStore {
   setStatusFilter: (status:statusType) => void;
   setDateFilter: (date:DateRange) => void;
   setNameFilter:(name:string)=>void;
-  setTasksFilter:(tasks:Task[]) => void;
+  setTasksFilter:(tasks:any[]) => void;
 }
 const currentDate = new Date();
 
