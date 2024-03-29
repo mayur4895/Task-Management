@@ -9,7 +9,7 @@ import React from 'react';
 const CompletedTasks = () => {
   
   const {data:Tasks,isLoading:IsLoading} = useQuery({ queryKey: ['tasks'], queryFn: GetAllTasks })
-  const { tasks, statusFilter, setStatusFilter } = useFilterStore();
+  const {  statusFilter, setStatusFilter } = useFilterStore();
 
   // Filter tasks based on status
   if(!Tasks){

@@ -1,5 +1,5 @@
-import Header from '@/components/Header'
-import Tasks from '@/components/Todos'
+import Header from '@/components/Header' 
+import Tasks from '@/components/Tasks'
  
 import React from 'react'
 

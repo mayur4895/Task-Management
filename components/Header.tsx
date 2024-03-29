@@ -6,7 +6,7 @@ import { ModeToggle } from "./mode-toggle";
 const Header = () => {
   return (
     <>
-      <div className="border rounded-md p-5 mb-5 bg-zinc-100 dark:bg-zinc-900 flex justify-between">
+      <div className="border rounded-md py-3 px-5 mb-5 bg-zinc-100 dark:bg-zinc-900 flex justify-between">
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-5">
           <UserButton />

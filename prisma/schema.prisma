@@ -20,7 +20,7 @@ enum Status {
   completed
   inprogress
   deployed
-  deffered
+  deferred
 
 }
  

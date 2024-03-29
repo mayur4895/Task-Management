@@ -45,15 +45,13 @@ import { Textarea } from "../ui/textarea"
 const formSchema = z.object({
     title: z.string().min(1,{
       message:"required"
-    }).max(20,{
-        message:"max is 20"
     }),
     desc: z
     .string()
     .min(1, {
-      message: "Description must be at least 10 characters.",
+      message: "Desctiption required characters.",
     })
-    .max(160, {
+    .max(250, {
       message: "Description must not be longer than 30 characters.",
     }),
  
