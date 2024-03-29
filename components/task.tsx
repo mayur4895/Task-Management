@@ -11,21 +11,15 @@ import {
 } from "@/components/ui/card";
 import { CiEdit } from "react-icons/ci";
 import {
-  PiTrashSimpleThin,
-  PiCheckThin,
-  PiCrossThin,
-  PiXThin,
-} from "react-icons/pi";
-import { Toggle } from "@/components/ui/toggle";
-import axios from "axios";
-import { PiCircleNotchLight } from "react-icons/pi";
+  PiTrashSimpleThin, 
+} from "react-icons/pi"; 
+ 
 import { useRouter } from "next/navigation";
-import { Task } from "@prisma/client";
+ 
 import { Label } from "./ui/label";
 import { useModal } from "@/hooks/use-modal-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { DeleteTask, GetAllTasks } from "./helper/helper";
-import useFilterStore from "@/hooks/use-filter-store";
+import { DeleteTask, GetAllTasks } from "./helper/helper"; 
 import { cn } from "@/lib/utils";
 import { Separator } from "./ui/separator";
 import AlertDilog from "./modal/alert-modal";
@@ -42,8 +36,7 @@ const ColorMap: any = {
   deferred: " bg-orange-100 dark:bg-orange-500/20",
 };
 
-const TaskCard = ({ taskdata: task }: TaskCardProps) => {
-  const router = useRouter();
+const TaskCard = ({ taskdata: task }: TaskCardProps) => { 
   const queryClient = useQueryClient();
 
   const { data: Tasks, isLoading: IsLoading } = useQuery({
